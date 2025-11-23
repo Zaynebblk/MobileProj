@@ -57,7 +57,7 @@ class ProfHomePage extends StatelessWidget {
           child: Opacity(
             opacity: 0.15,
             child: Image(
-              image: AssetImage("assets/header.jpg"),
+              image: AssetImage("assets/imgs/supcom.jpg"),
               fit: BoxFit.cover,
             ),
           ),
