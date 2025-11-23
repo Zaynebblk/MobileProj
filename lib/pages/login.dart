@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'forgot_password.dart';
+import 'prof.dart'; // <-- ADD THIS
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -23,18 +24,22 @@ class _LoginPageState extends State<LoginPage> {
             padding: const EdgeInsets.all(20),
             width: 380,
             decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: Colors.white.withValues(alpha: 0.05),
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white.withValues(alpha: 0.05),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [ClipRRect(
-              borderRadius: BorderRadius.circular(8), 
-              child: Image.asset(
-                "assets/imgs/logo.png",
-                width: 240,
-              ),
-            ),
+              children: [
+
+                // LOGO
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8), 
+                  child: Image.asset(
+                    "assets/imgs/logo.png",
+                    width: 240,
+                  ),
+                ),
+
                 const SizedBox(height: 20),
 
                 const Text(
@@ -47,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 20),
 
+                // ROLE BUTTONS
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -58,6 +64,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 20),
 
+                // IDENTIFIANT
                 TextField(
                   controller: identifiantController,
                   decoration: InputDecoration(
@@ -73,6 +80,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 12),
 
+                // PASSWORD
                 TextField(
                   controller: passwordController,
                   obscureText: true,
@@ -89,6 +97,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 20),
 
+                // LOGIN BUTTON
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -97,49 +106,70 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.symmetric(vertical: 15),
                     ),
                     onPressed: () {
-                      // Navigator.pushNamed(context, "/dashboard");
+                      // ---------------------------------------------
+                      // LOGIN LOGIC
+                      // ---------------------------------------------
+                      if (selectedTab == 1) {
+                        
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ProfHomePage(),
+                          ),
+                        );
+                      } else if (selectedTab == 0) {
+                        
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Page etudiant non définie")),
+                        );
+                      } else if (selectedTab == 2) {
+                        // ADMINISTRATEUR
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Page Administrateur non définie")),
+                        );
+                      }
                     },
                     child: const Text(
                       "Se connecter",
-                      style: TextStyle(fontSize: 16, color: Colors.white,),
+                      style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
                 ),
 
                 const SizedBox(height: 12),
 
-              Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    const Text(
-      "Se connecter",
-      style: TextStyle(color: Colors.white),
-    ),
+                // FORGOT PASSWORD
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Se connecter",
+                      style: TextStyle(color: Colors.white),
+                    ),
 
-    // Make this clickable
-    GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ForgotPasswordPage(),
-          ),
-        );
-      },
-      child: const Text(
-        "Mot de passe oublié",
-        style: TextStyle(
-          color: Colors.white,
-          decoration: TextDecoration.underline,
-        ),
-      ),
-    ),
-  ],
-)
-,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ForgotPasswordPage(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "Mot de passe oublié",
+                        style: TextStyle(
+                          color: Colors.white,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
 
                 const SizedBox(height: 20),
 
+                // FOOTER
                 const Text(
                   "SUP'COM\nKEDUX 2.1.1 © 2017-2025 2C Services\nTous droits réservés.",
                   textAlign: TextAlign.center,
@@ -156,6 +186,9 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  // -----------------------------------------------------------
+  // ROLE BUTTON WIDGET
+  // -----------------------------------------------------------
   Widget roleButton(String label, int index) {
     return Expanded(
       child: GestureDetector(

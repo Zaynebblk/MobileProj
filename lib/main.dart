@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'pages/login.dart';
 import 'pages/forgot_password.dart';
+import 'pages/prof.dart';
 
 
 void main() {
@@ -18,6 +19,7 @@ class SupComApp extends StatelessWidget {
       routes: {
         "/": (context) => LoginPage(),
         '/forgotpass': (context) => ForgotPasswordPage(),
+        '/prof': (context) => const ProfHomePage(),
         
       },
     );             
