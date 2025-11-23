@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'forgot_password.dart';
-import 'prof.dart'; // <-- ADD THIS
+import 'prof.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
 
-                // LOGO
+                
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8), 
                   child: Image.asset(
@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 20),
 
-                // ROLE BUTTONS
+                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 20),
 
-                // IDENTIFIANT
+                
                 TextField(
                   controller: identifiantController,
                   decoration: InputDecoration(
@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 20),
 
-                // LOGIN BUTTON
+                
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -106,9 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.symmetric(vertical: 15),
                     ),
                     onPressed: () {
-                      // ---------------------------------------------
-                      // LOGIN LOGIC
-                      // ---------------------------------------------
+                    
                       if (selectedTab == 1) {
                         
                         Navigator.push(
@@ -123,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                           const SnackBar(content: Text("Page etudiant non définie")),
                         );
                       } else if (selectedTab == 2) {
-                        // ADMINISTRATEUR
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("Page Administrateur non définie")),
                         );
@@ -138,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 12),
 
-                // FORGOT PASSWORD
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -169,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 20),
 
-                // FOOTER
+
                 const Text(
                   "SUP'COM\nKEDUX 2.1.1 © 2017-2025 2C Services\nTous droits réservés.",
                   textAlign: TextAlign.center,
@@ -186,9 +184,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // -----------------------------------------------------------
-  // ROLE BUTTON WIDGET
-  // -----------------------------------------------------------
+  
   Widget roleButton(String label, int index) {
     return Expanded(
       child: GestureDetector(

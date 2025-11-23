@@ -35,9 +35,7 @@ class ProfHomePage extends StatelessWidget {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // HEADER
-  // ---------------------------------------------------------------------------
+ 
   Widget _buildHeader(BuildContext context) {
     return Stack(
       children: [
@@ -97,9 +95,7 @@ class ProfHomePage extends StatelessWidget {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // 3 STATS : COURSES - STUDENTS - EXAMS
-  // ---------------------------------------------------------------------------
+ 
   Widget _buildStatsCard() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -134,9 +130,7 @@ class ProfHomePage extends StatelessWidget {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // SECTION TITLE
-  // ---------------------------------------------------------------------------
+ 
   Widget _buildSectionTitle(String title) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -150,9 +144,6 @@ class ProfHomePage extends StatelessWidget {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // GRID MENU
-  // ---------------------------------------------------------------------------
   Widget _buildGridMenu() {
     final List<Map<String, dynamic>> items = [
       {"icon": Icons.book, "label": "Mes Cours"},
@@ -214,9 +205,7 @@ class ProfHomePage extends StatelessWidget {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // QUICK ACTIONS
-  // ---------------------------------------------------------------------------
+
   Widget _buildQuickAction() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -247,9 +236,7 @@ class ProfHomePage extends StatelessWidget {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // BOTTOM NAVIGATION BAR
-  // ---------------------------------------------------------------------------
+
   Widget buildBottomNavBar() {
     return BottomNavigationBar(
       selectedItemColor: Colors.green,
