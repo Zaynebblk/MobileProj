@@ -5,31 +5,31 @@ class ProfHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( // scaffold = structure de base d'une page
       backgroundColor: const Color(0xffF5F8F7),
-      bottomNavigationBar: buildBottomNavBar(),
+      bottomNavigationBar: buildBottomNavBar(), // barre de navigation en bas
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildHeader(context),
+            _buildHeader(context), // en-tête de la page
 
             const SizedBox(height: 15),
 
-            _buildStatsCard(),
+            _buildStatsCard(), // carte de statistiques
 
             const SizedBox(height: 20),
 
-            _buildSectionTitle("ESPACE PROFESSEUR"),
+            _buildSectionTitle("ESPACE PROFESSEUR"), // titre de section
 
-            _buildGridMenu(),
+            _buildGridMenu(), // menu en grille
 
             const SizedBox(height: 15),
 
-            _buildSectionTitle("Actions rapides"),
+            _buildSectionTitle("Actions rapides"), // autre titre de section
 
-            _buildQuickAction(),
+            _buildQuickAction(), // action rapide
             const SizedBox(height: 20),
-          ],
+          ], // kolhom des methodes à définir
         ),
       ),
     );
@@ -45,8 +45,8 @@ class ProfHomePage extends StatelessWidget {
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xfff23859), Color(0xfffb729e)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+              begin: Alignment.topLeft, // dégradé de couleur
+              end: Alignment.bottomRight, // dégradé de couleur
             ),
           ),
         ),
@@ -56,12 +56,12 @@ class ProfHomePage extends StatelessWidget {
             opacity: 0.15,
             child: Image(
               image: AssetImage("assets/imgs/supcom.jpg"),
-              fit: BoxFit.cover,
+              fit: BoxFit.cover, // hedhi tkhali l'image cover kol l'espace
             ),
           ),
         ),
 
-        Positioned(
+        Positioned( // positionner les éléments dans le stack
           top: 45,
           left: 20,
           right: 20,
@@ -98,8 +98,8 @@ class ProfHomePage extends StatelessWidget {
  
   Widget _buildStatsCard() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 20), // marge horizontale
+      padding: const EdgeInsets.symmetric(vertical: 20), // padding vertical
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -109,7 +109,7 @@ class ProfHomePage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _singleStat("8", "Cours"),
+          _singleStat("8", "Cours"), // _singleStat est une méthode définie en dessous
           _singleStat("156", "Étudiants"),
           _singleStat("12", "Examens"),
         ],
@@ -120,12 +120,12 @@ class ProfHomePage extends StatelessWidget {
   Widget _singleStat(String value, String label) {
     return Column(
       children: [
-        Text(value,
-            style: const TextStyle(
+        Text(value, // exp 12
+            style: const TextStyle( 
                 color: Colors.green,
                 fontSize: 20,
                 fontWeight: FontWeight.bold)),
-        Text(label, style: const TextStyle(color: Colors.grey)),
+        Text(label, style: const TextStyle(color: Colors.grey)), // exp examens
       ],
     );
   }
@@ -145,7 +145,7 @@ class ProfHomePage extends StatelessWidget {
   }
 
   Widget _buildGridMenu() {
-    final List<Map<String, dynamic>> items = [
+    final List<Map<String, dynamic>> items = [ // hedhi liste mta3 les items (icon + label)
       {"icon": Icons.book, "label": "Mes Cours"},
       {"icon": Icons.group, "label": "Étudiants"},
       {"icon": Icons.checklist, "label": "Notes"},
@@ -165,18 +165,18 @@ class ProfHomePage extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: items.length,
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              mainAxisExtent: 115,
-              crossAxisSpacing: 15,
-              mainAxisSpacing: 15),
+      child: GridView.builder( // grille dynamique
+        shrinkWrap: true, // pour que la grille prenne seulement l'espace nécessaire
+        physics: const NeverScrollableScrollPhysics(), // désactiver le scroll interne de la grille
+        itemCount: items.length, // nombre d'items dans la grille
+        gridDelegate: // définir la structure de la grille
+            const SliverGridDelegateWithFixedCrossAxisCount( // nombre fixe de colonnes
+              crossAxisCount: 3, // 3 colonnes
+              mainAxisExtent: 115, // hauteur fixe des éléments
+              crossAxisSpacing: 15, // espacement horizontal entre les éléments
+              mainAxisSpacing: 15),// espacement vertical entre les éléments
         itemBuilder: (context, index) {
-          return _gridItem(items[index]["icon"], items[index]["label"]);
+          return _gridItem(items[index]["icon"], items[index]["label"]);  // _gridItem est une méthode définie en dessous
         },
       ),
     );
@@ -206,7 +206,7 @@ class ProfHomePage extends StatelessWidget {
   }
 
 
-  Widget _buildQuickAction() {
+  Widget _buildQuickAction() { // action rapide
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.all(18),
@@ -221,7 +221,7 @@ class ProfHomePage extends StatelessWidget {
           const Icon(Icons.check_circle, color: Colors.red, size: 30),
           const SizedBox(width: 15),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start, // aligner le texte à gauche
             children: const [
               Text("Marquer les absences",
                   style: TextStyle(
@@ -238,14 +238,14 @@ class ProfHomePage extends StatelessWidget {
 
 
   Widget buildBottomNavBar() {
-    return BottomNavigationBar(
-      selectedItemColor: Colors.green,
+    return BottomNavigationBar( // barre de navigation en bas
+      selectedItemColor: Colors.green, // couleur de l'item sélectionné
       unselectedItemColor: Colors.grey,
-      currentIndex: 0,
-      type: BottomNavigationBarType.fixed,
+      currentIndex: 0, // index de l'item sélectionné
+      type: BottomNavigationBarType.fixed, // type fixe pour afficher tous les items
       items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-        BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: ''), // label vide pour ne pas afficher de texte
+        BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''), 
         BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: ''),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
       ],
