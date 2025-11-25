@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'forgot_password.dart';
 import 'prof.dart';
+import 'admin.dart';
 
 class LoginPage extends StatefulWidget { // Changed to StatefulWidget (l’interface doit réagir)
   const LoginPage({super.key});
@@ -122,8 +123,11 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       } else if (selectedTab == 2) {
 
-                        ScaffoldMessenger.of(context).showSnackBar( 
-                          const SnackBar(content: Text("Page Administrateur non encore définie")),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AdminHomePage(),
+                          ),
                         );
                       }
                     },

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart'; //Importe la bibliothèque Material Desi
 import 'pages/login.dart';
 import 'pages/forgot_password.dart';
 import 'pages/prof.dart';
+import 'pages/notes.dart';
+import 'pages/admin.dart';
 
 
 void main() {
@@ -20,6 +22,8 @@ class SupComApp extends StatelessWidget { //l'application entière est définie 
         "/": (context) => LoginPage(), 
         '/forgotpass': (context) => ForgotPasswordPage(),
         '/prof': (context) => const ProfHomePage(),
+        '/admin': (context) => const AdminHomePage(),
+        '/notes': (context) => const PublierNotesPage(),
         
       },
     );             
