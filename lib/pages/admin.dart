@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'tickets.dart';
 
  import 'notes.dart';
 
@@ -9,6 +10,14 @@ class AdminHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffF5F8F7),
+      appBar: AppBar(
+        backgroundColor: const Color(0xffF5F8F7),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       bottomNavigationBar: buildBottomNavBar(),
       body: SingleChildScrollView(
         child: Column(
@@ -195,6 +204,10 @@ class AdminHomePage extends StatelessWidget {
                   
 
                 case "Tickets":
+                  Navigator.push(
+                     context,
+                     MaterialPageRoute(builder: (context) => TicketsPage()),
+                   );
                   break;
 
                 case "Utilisateurs":

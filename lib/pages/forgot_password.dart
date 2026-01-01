@@ -14,25 +14,20 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0F1C2E),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF0F1C2E),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: const Row(
-                  children: [
-                    Icon(Icons.arrow_back, color: Colors.white),
-                    SizedBox(width: 8),
-                    Text("Retour à la connexion", style: TextStyle(color: Colors.white, fontSize: 16)),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
-
-              // Logo
               Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8), 

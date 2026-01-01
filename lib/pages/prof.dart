@@ -7,6 +7,14 @@ class ProfHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold( // scaffold = structure de base d'une page
       backgroundColor: const Color(0xffF5F8F7),
+      appBar: AppBar(
+        backgroundColor: const Color(0xffF5F8F7),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       bottomNavigationBar: buildBottomNavBar(), // barre de navigation en bas
       body: SingleChildScrollView(
         child: Column(

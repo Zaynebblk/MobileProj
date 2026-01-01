@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart'; //Importe la bibliothèque Material Design de Flutter (widgets, thèmes, boutons, etc.).
+import 'package:provider/provider.dart';
 import 'pages/login.dart';
 import 'pages/forgot_password.dart';
 import 'pages/prof.dart';
 import 'pages/notes.dart';
 import 'pages/admin.dart';
+import 'providers/ticket_provider.dart';
 
 
 void main() {
-  runApp(const SupComApp()); //Lance l'application Flutter et affiche le widget SupComApp comme racine de l’interface.
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => TicketProvider()),
+      ],
+      child: const SupComApp(),
+    ),
+  );
+  //Lance l'application Flutter et affiche le widget SupComApp comme racine de l’interface.
 }
 
 class SupComApp extends StatelessWidget { //l'application entière est définie comme un widget sans état (StatelessWidget).

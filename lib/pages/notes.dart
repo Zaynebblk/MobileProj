@@ -12,11 +12,14 @@ class PublierNotesPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xffff5f6e),
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: const Text(
           "Publier Notes",
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        leading: const Icon(Icons.arrow_back, color: Colors.white),
       ),
 
       body: SingleChildScrollView(
