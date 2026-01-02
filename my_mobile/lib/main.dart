@@ -12,6 +12,7 @@ import 'viewmodels/emploi_viewmodel.dart';
 import 'viewmodels/document_viewmodel.dart';
 import 'viewmodels/absence_viewmodel.dart';
 import 'viewmodels/nmessage_viewmodel.dart';
+import 'viewmodels/profile_viewmodel.dart';
 
 
 // --- IMPORTS DES VIEWS ---
@@ -32,6 +33,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => DocumentViewModel()),
         ChangeNotifierProvider(create: (_) => AbsenceViewModel()),
         ChangeNotifierProvider(create: (_) => NMessageViewModel()),
+        ChangeNotifierProvider(create: (_) => ProfileViewModel()),
+
       ],
       child: const MyApp(),
     ),

@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 // Import du ViewModel
 import '../viewmodels/student_viewmodel.dart';
 
-// Tes imports de navigation (Assure-toi que les chemins sont corrects)
+// Imports des vues
 import 'emploi_view.dart';
 import 'group_view.dart';
 import 'messages_view.dart';
@@ -14,6 +14,7 @@ import 'absences_view.dart';
 import 'info_view.dart';
 import 'resultats_view.dart';
 import 'documents_view.dart'; 
+import 'profile_view.dart'; // Assure-toi que ce fichier existe
 
 class StudentHome extends StatefulWidget {
   const StudentHome({super.key});
@@ -26,7 +27,7 @@ class _StudentHomeState extends State<StudentHome> {
   @override
   void initState() {
     super.initState();
-    // On lance la récupération des données via le ViewModel dès le démarrage
+    // Récupération des données via le ViewModel
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<StudentViewModel>().fetchStudent();
     });
@@ -34,7 +35,6 @@ class _StudentHomeState extends State<StudentHome> {
 
   @override
   Widget build(BuildContext context) {
-    // Écoute les changements du ViewModel (Data Binding)
     final viewModel = context.watch<StudentViewModel>();
     final student = viewModel.student;
 
@@ -45,16 +45,38 @@ class _StudentHomeState extends State<StudentHome> {
         elevation: 0,
         title: Row(
           children: [
-            // --- PHOTO DE PROFIL DYNAMIQUE ---
-            CircleAvatar(
-              radius: 20,
-              backgroundImage: (student?.photoUrl != null)
-                  ? NetworkImage(student!.photoUrl!)
-                  : const AssetImage('assets/user.jpg') as ImageProvider,
+            // --- PHOTO DE PROFIL INTERACTIVE AVEC EFFET VISUEL ---
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ProfileView()),
+                  );
+                },
+                borderRadius: BorderRadius.circular(25),
+                splashColor: Colors.blue.withOpacity(0.2),
+                highlightColor: Colors.blue.withOpacity(0.1),
+                child: Container(
+                  padding: const EdgeInsets.all(2), // Espace pour l'effet de clic
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.blue.shade100, width: 1),
+                  ),
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.grey.shade200,
+                    backgroundImage: (student?.photoUrl != null)
+                        ? NetworkImage(student!.photoUrl!)
+                        : const AssetImage('assets/user.jpg') as ImageProvider,
+                  ),
+                ),
+              ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 12),
             
-            // --- NOM ET PRÉNOM DYNAMIQUES ---
+            // --- NOM ET PRÉNOM ---
             viewModel.isLoading
                 ? const Text("Chargement...", style: TextStyle(color: Colors.black, fontSize: 12))
                 : Column(
@@ -73,7 +95,12 @@ class _StudentHomeState extends State<StudentHome> {
                   ),
             
             const Spacer(),
-            const Icon(Icons.logout, size: 18, color: Colors.black),
+            IconButton(
+              icon: const Icon(Icons.logout, size: 20, color: Colors.black),
+              onPressed: () {
+                // Action de déconnexion
+              },
+            ),
           ],
         ),
       ),
@@ -146,41 +173,21 @@ class _StudentHomeState extends State<StudentHome> {
                 ],
               ),
             ),
-          ],
-        ),
-      ),
-
-      bottomNavigationBar: Container(
-        height: 65,
-        decoration: const BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(25),
-            topRight: Radius.circular(25),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            navItem(Icons.home, true),
-            navItem(Icons.calendar_today, false),
-            navItem(Icons.settings, false),
-            navItem(Icons.person, false),
+            const SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
 
-  // --- WIDGETS D'AIDE (HELPERS) ---
-  
+  // --- WIDGET D'AIDE POUR LE MENU ---
   Widget buildMenu(BuildContext context, String title, IconData icon, {VoidCallback? onTap}) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.blue.shade50,
+          color: Colors.blue.shade50, // Teinte bleue claire cohérente
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
@@ -197,9 +204,5 @@ class _StudentHomeState extends State<StudentHome> {
         ),
       ),
     );
-  }
-
-  Widget navItem(IconData icon, bool active) {
-    return Icon(icon, size: 30, color: active ? Colors.white : Colors.white70);
   }
 }

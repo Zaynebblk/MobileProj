@@ -4,6 +4,7 @@ class StudentModel {
   final String lastName;
   final String? photoUrl;
   final String? studentClass;
+  
 
   StudentModel({
     required this.id,
@@ -11,6 +12,7 @@ class StudentModel {
     required this.lastName,
     this.photoUrl,
     this.studentClass,
+    
   });
 
   // Pour transformer le JSON de l'API en objet Dart
@@ -21,6 +23,7 @@ class StudentModel {
       lastName: json['lastName'] ?? '',
       photoUrl: json['photoUrl'],
       studentClass: json['studentClass'],
+      
     );
   }
 }
