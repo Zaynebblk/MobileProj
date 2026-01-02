@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http; // Pour la connexion
-import 'dart:convert'; // Pour lire les données
-
-// Tes imports de pages
-import 'emploi.dart';
-import 'group.dart';
-import 'messages.dart';
-import 'partage.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'absences.dart';
-import 'info.dart';
-import 'resultats.dart';
-import 'Documents.dart';
 
-// On passe en StatefulWidget pour gérer le chargement des données
+// Import du ViewModel
+import '../viewmodels/student_viewmodel.dart';
+
+// Tes imports de navigation (Assure-toi que les chemins sont corrects)
+import 'emploi_view.dart';
+import 'group_view.dart';
+import 'messages_view.dart';
+import 'partage_view.dart';
+import 'absences_view.dart';
+import 'info_view.dart';
+import 'resultats_view.dart';
+import 'documents_view.dart'; 
+
 class StudentHome extends StatefulWidget {
   const StudentHome({super.key});
 
@@ -22,49 +23,23 @@ class StudentHome extends StatefulWidget {
 }
 
 class _StudentHomeState extends State<StudentHome> {
-  // ---------------------------------------------------------
-  // 🔧 CONFIGURATION DE LA CONNEXION
-  // ---------------------------------------------------------
-  
-  // 1. L'ID de Salma que tu m'as donné
-  final String studentId = "69568094a80bc4f943d55964"; 
-
-  // 2. L'adresse du serveur (10.0.2.2 pour l'émulateur Android)
-  final String serverUrl = "http://localhost:5000/api/students";
-
-  // Variables pour stocker les infos
-  Map<String, dynamic>? studentData;
-  bool isLoading = true;
-
   @override
   void initState() {
     super.initState();
-    fetchStudent(); // On lance la récupération dès le démarrage
-  }
-
-  // Fonction pour récupérer les données depuis Node.js/MongoDB
-  Future<void> fetchStudent() async {
-    try {
-      final response = await http.get(Uri.parse('$serverUrl/$studentId'));
-
-      if (response.statusCode == 200) {
-        setState(() {
-          studentData = json.decode(response.body);
-          isLoading = false;
-        });
-      } else {
-        print("Erreur serveur : ${response.statusCode}");
-      }
-    } catch (e) {
-      print("Erreur de connexion : $e");
-    }
+    // On lance la récupération des données via le ViewModel dès le démarrage
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<StudentViewModel>().fetchStudent();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    // Écoute les changements du ViewModel (Data Binding)
+    final viewModel = context.watch<StudentViewModel>();
+    final student = viewModel.student;
+
     return Scaffold(
       backgroundColor: Colors.white,
-
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -73,28 +48,25 @@ class _StudentHomeState extends State<StudentHome> {
             // --- PHOTO DE PROFIL DYNAMIQUE ---
             CircleAvatar(
               radius: 20,
-              // Si on a chargé les données et qu'il y a une URL, on l'affiche.
-              // Sinon, on affiche l'image par défaut assets/user.jpg
-              backgroundImage: (studentData != null && studentData!['photoUrl'] != null)
-                  ? NetworkImage(studentData!['photoUrl'])
+              backgroundImage: (student?.photoUrl != null)
+                  ? NetworkImage(student!.photoUrl!)
                   : const AssetImage('assets/user.jpg') as ImageProvider,
             ),
             const SizedBox(width: 10),
             
             // --- NOM ET PRÉNOM DYNAMIQUES ---
-            isLoading
+            viewModel.isLoading
                 ? const Text("Chargement...", style: TextStyle(color: Colors.black, fontSize: 12))
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${studentData!['firstName']} ${studentData!['lastName']}", // Nom Prénom
+                        "${student?.firstName ?? ''} ${student?.lastName ?? ''}",
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
                       ),
-                      // J'ajoute la classe en petit en dessous si tu veux
-                      if (studentData!['studentClass'] != null)
+                      if (student?.studentClass != null)
                         Text(
-                          studentData!['studentClass'],
+                          student!.studentClass!,
                           style: const TextStyle(fontSize: 10, color: Colors.grey),
                         ),
                     ],
@@ -131,7 +103,7 @@ class _StudentHomeState extends State<StudentHome> {
             ),
             const SizedBox(height: 10),
 
-            // GRID MENU (Ton code de navigation conservé)
+            // GRID MENU
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: GridView.count(
@@ -169,8 +141,6 @@ class _StudentHomeState extends State<StudentHome> {
                     final Uri url = Uri.parse("https://supcom.tn/");
                     if (await canLaunchUrl(url)) {
                       await launchUrl(url, mode: LaunchMode.externalApplication);
-                    } else {
-                      print("Impossible d’ouvrir le site");
                     }
                   }),
                 ],
