@@ -26,6 +26,12 @@ app.get("/", (req, res) => {
 });
 
 const PORT = process.env.PORT; 
+const email = process.env.EMAIL_USER;
+const pass = process.env.EMAIL_PASS;
+console.log(email);
+console.log(pass);
+
+
 connectDB().then(() => {
   console.log("✅ Database connected");
 }

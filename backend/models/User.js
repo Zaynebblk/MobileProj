@@ -12,6 +12,13 @@ const userSchema = new mongoose.Schema({
   },
   resetToken: String,
   resetTokenExpiration: Date,
+  resetCode: {
+  type: String,
+},
+resetCodeExpiration: {
+  type: Date,
+},
+
 });
 
 export default mongoose.model("User", userSchema);
