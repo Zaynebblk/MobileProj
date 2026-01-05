@@ -14,7 +14,7 @@ import 'absences_view.dart';
 import 'info_view.dart';
 import 'resultats_view.dart';
 import 'documents_view.dart'; 
-import 'profile_view.dart'; // Assure-toi que ce fichier existe
+import 'profile_view.dart'; 
 
 class StudentHome extends StatefulWidget {
   const StudentHome({super.key});
@@ -24,6 +24,8 @@ class StudentHome extends StatefulWidget {
 }
 
 class _StudentHomeState extends State<StudentHome> {
+  int _selectedIndex = 0; // État pour l'élément sélectionné dans la barre bleue
+
   @override
   void initState() {
     super.initState();
@@ -45,7 +47,7 @@ class _StudentHomeState extends State<StudentHome> {
         elevation: 0,
         title: Row(
           children: [
-            // --- PHOTO DE PROFIL INTERACTIVE AVEC EFFET VISUEL ---
+            // --- PHOTO DE PROFIL INTERACTIVE ---
             Material(
               color: Colors.transparent,
               child: InkWell(
@@ -59,7 +61,7 @@ class _StudentHomeState extends State<StudentHome> {
                 splashColor: Colors.blue.withOpacity(0.2),
                 highlightColor: Colors.blue.withOpacity(0.1),
                 child: Container(
-                  padding: const EdgeInsets.all(2), // Espace pour l'effet de clic
+                  padding: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(color: Colors.blue.shade100, width: 1),
@@ -177,6 +179,48 @@ class _StudentHomeState extends State<StudentHome> {
           ],
         ),
       ),
+
+      // --- BARRE BLEUE INFÉRIEURE ---
+      bottomNavigationBar: Container(
+        height: 70,
+        decoration: const BoxDecoration(
+          color: Colors.blue,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _navItem(Icons.home, 0),
+            _navItem(Icons.calendar_today, 1),
+            _navItem(Icons.settings, 2),
+            _navItem(Icons.person, 3),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Widget d'aide pour les icônes de la barre bleue
+  Widget _navItem(IconData icon, int index) {
+    bool isActive = _selectedIndex == index;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedIndex = index;
+        });
+        // Optionnel : Ajouter une navigation ici si nécessaire
+        if (index == 3) {
+           Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileView()));
+        }
+      },
+      child: Icon(
+        icon,
+        size: 28,
+        color: isActive ? Colors.white : Colors.white70,
+      ),
     );
   }
 
@@ -187,7 +231,7 @@ class _StudentHomeState extends State<StudentHome> {
       borderRadius: BorderRadius.circular(16),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.blue.shade50, // Teinte bleue claire cohérente
+          color: Colors.blue.shade50,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
