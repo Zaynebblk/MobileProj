@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_models/user_view_model.dart';
 import '../models/user_model.dart';
+import 'edit_user_view.dart'; 
+import 'add_user_view.dart'; // IMPORT DE LA PAGE D'AJOUT
 
 class UserView extends StatefulWidget {
   const UserView({super.key});
@@ -96,13 +98,18 @@ class _UserViewState extends State<UserView> {
                 ),
                 const SizedBox(height: 20),
 
-                // BOUTON AJOUTER
+                // BOUTON AJOUTER (CONNECTÉ)
                 SizedBox(
                   width: double.infinity,
                   height: 45,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(backgroundColor: orangeBtn, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const AddUserView()),
+                      );
+                    },
                     child: const Text("Ajouter un utilisateur", style: TextStyle(color: Colors.white, fontSize: 16)),
                   ),
                 ),
@@ -113,7 +120,7 @@ class _UserViewState extends State<UserView> {
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: vm.users.length,
-                  itemBuilder: (ctx, i) => _userCard(vm.users[i]),
+                  itemBuilder: (ctx, i) => _userCard(context, vm.users[i]),
                 ),
               ],
             ),
@@ -136,7 +143,7 @@ class _UserViewState extends State<UserView> {
     );
   }
 
-  Widget _userCard(AppUser user) {
+  Widget _userCard(BuildContext context, AppUser user) {
     Color badgeColor = user.role == "Étudiant" ? Colors.blue : (user.role == "Professeur" ? Colors.green : Colors.purple);
     IconData icon = user.role == "Étudiant" ? Icons.school : (user.role == "Professeur" ? Icons.person_outline : Icons.admin_panel_settings);
 
@@ -165,8 +172,8 @@ class _UserViewState extends State<UserView> {
                         Expanded(child: Text(user.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15))),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(color: Colors.green.withOpacity(0.1), borderRadius: BorderRadius.circular(4)),
-                          child: Text(user.status, style: const TextStyle(color: Colors.green, fontSize: 10, fontWeight: FontWeight.bold)),
+                          decoration: BoxDecoration(color: user.status == "Actif" ? Colors.green.withOpacity(0.1) : Colors.red.withOpacity(0.1), borderRadius: BorderRadius.circular(4)),
+                          child: Text(user.status, style: TextStyle(color: user.status == "Actif" ? Colors.green : Colors.red, fontSize: 10, fontWeight: FontWeight.bold)),
                         )
                       ],
                     ),
@@ -189,24 +196,25 @@ class _UserViewState extends State<UserView> {
             ],
           ),
           const SizedBox(height: 15),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(side: const BorderSide(color: Color(0xFFE65100)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-                  child: const Text("Modifier", style: TextStyle(color: Color(0xFFE65100))),
-                ),
+          
+          // --- BOUTON UNIQUE "GÉRER LE PROFIL" ---
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context, 
+                  MaterialPageRoute(builder: (_) => EditUserView(user: user))
+                );
+              },
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: Color(0xFFE65100)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                padding: const EdgeInsets.symmetric(vertical: 10)
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.grey), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-                  child: const Text("Détails", style: TextStyle(color: Colors.black87)),
-                ),
-              ),
-            ],
+              icon: const Icon(Icons.settings, size: 18, color: Color(0xFFE65100)),
+              label: const Text("GÉRER LE PROFIL", style: TextStyle(color: Color(0xFFE65100), fontWeight: FontWeight.bold)),
+            ),
           ),
         ],
       ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_models/schedule_view_model.dart';
 import '../models/schedule_model.dart';
+import 'schedule_details_view.dart'; 
+import 'add_schedule_view.dart'; // IMPORT DE LA PAGE D'AJOUT
 
 class ScheduleView extends StatefulWidget {
   const ScheduleView({super.key});
@@ -66,8 +68,15 @@ class _ScheduleViewState extends State<ScheduleView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text("Emplois par classe", style: TextStyle(color: Colors.brown, fontSize: 16, fontWeight: FontWeight.bold)),
+                    
+                    // --- BOUTON NOUVEAU CONNECTÉ ---
                     ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const AddScheduleView()),
+                        );
+                      },
                       icon: const Icon(Icons.add, size: 18, color: Colors.white),
                       label: const Text("Nouveau", style: TextStyle(color: Colors.white)),
                       style: ElevatedButton.styleFrom(backgroundColor: orangeBtn, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
@@ -81,7 +90,7 @@ class _ScheduleViewState extends State<ScheduleView> {
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: vm.classes.length,
-                  itemBuilder: (ctx, i) => _classCard(vm.classes[i]),
+                  itemBuilder: (ctx, i) => _classCard(context, vm.classes[i]),
                 ),
 
                 const SizedBox(height: 25),
@@ -108,7 +117,7 @@ class _ScheduleViewState extends State<ScheduleView> {
   Widget _statCard(int count, String label, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 15),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)]),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), boxShadow: [const BoxShadow(color: Colors.black12, blurRadius: 4)]),
       child: Column(
         children: [
           Text("$count", style: TextStyle(color: color, fontSize: 20, fontWeight: FontWeight.bold)),
@@ -118,15 +127,16 @@ class _ScheduleViewState extends State<ScheduleView> {
     );
   }
 
-  Widget _classCard(ScheduleClass item) {
+  Widget _classCard(BuildContext context, ScheduleClass item) {
     bool isPublished = item.status == "publié";
     Color statusColor = isPublished ? Colors.green : Colors.amber;
     Color statusBg = isPublished ? Colors.green.withOpacity(0.1) : Colors.amber.withOpacity(0.1);
+    final orangeBtn = const Color(0xFFE65100);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15), boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)]),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15), boxShadow: [const BoxShadow(color: Colors.black12, blurRadius: 4)]),
       child: Column(
         children: [
           Row(
@@ -161,25 +171,25 @@ class _ScheduleViewState extends State<ScheduleView> {
             ],
           ),
           const SizedBox(height: 15),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.edit, size: 16, color: Color(0xFFE65100)),
-                  label: const Text("Modifier", style: TextStyle(color: Color(0xFFE65100))),
-                  style: OutlinedButton.styleFrom(side: const BorderSide(color: Color(0xFFE65100)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-                ),
+          
+          // BOUTON UNIQUE "VÉRIFIER"
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ScheduleDetailsView(scheduleClass: item)),
+                );
+              },
+              icon: Icon(Icons.verified_outlined, size: 18, color: orangeBtn),
+              label: Text("VÉRIFIER LE PLANNING", style: TextStyle(color: orangeBtn, fontWeight: FontWeight.bold)),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                side: BorderSide(color: orangeBtn), 
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {},
-                  child: const Text("Voir emploi", style: TextStyle(color: Colors.black87)),
-                  style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.grey), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ),
@@ -193,7 +203,7 @@ class _ScheduleViewState extends State<ScheduleView> {
     return Container(
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.only(bottom: 10),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15), boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)]),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15), boxShadow: [const BoxShadow(color: Colors.black12, blurRadius: 4)]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

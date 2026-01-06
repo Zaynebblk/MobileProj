@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_models/room_view_model.dart';
 import '../models/room_model.dart';
+import 'add_room_view.dart'; // IMPORT DE LA NOUVELLE PAGE
 
 class RoomView extends StatefulWidget {
   const RoomView({super.key});
@@ -65,8 +66,15 @@ class _RoomViewState extends State<RoomView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text("Liste des locaux", style: TextStyle(color: Colors.brown, fontSize: 18, fontWeight: FontWeight.bold)),
+                    
+                    // --- BOUTON AJOUTER MODIFIÉ ---
                     ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                         Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const AddRoomView()),
+                        );
+                      },
                       icon: const Icon(Icons.add, size: 18, color: Colors.white),
                       label: const Text("Ajouter", style: TextStyle(color: Colors.white)),
                       style: ElevatedButton.styleFrom(backgroundColor: orangeBtn, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
@@ -93,7 +101,7 @@ class _RoomViewState extends State<RoomView> {
   Widget _statCard(int count, String label, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 15),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)]),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12), boxShadow: [const BoxShadow(color: Colors.black12, blurRadius: 4)]),
       child: Column(
         children: [
           Text("$count", style: TextStyle(color: color, fontSize: 20, fontWeight: FontWeight.bold)),
@@ -121,7 +129,7 @@ class _RoomViewState extends State<RoomView> {
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15), boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)]),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15), boxShadow: [const BoxShadow(color: Colors.black12, blurRadius: 4)]),
       child: Row(
         children: [
           // Icone Salle

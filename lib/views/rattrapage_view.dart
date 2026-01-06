@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_models/rattrapage_view_model.dart';
 import '../models/rattrapage_model.dart';
+import 'create_rattrapage_view.dart'; // Page de création
+import 'edit_rattrapage_view.dart';   // Page de modification (Nouvelle)
 
 class RattrapageView extends StatefulWidget {
   const RattrapageView({super.key});
@@ -25,7 +27,7 @@ class _RattrapageViewState extends State<RattrapageView> {
     final orangeBtn = const Color(0xFFE65100);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF8E1), // Fond Crème
+      backgroundColor: const Color(0xFFFFF8E1),
       appBar: AppBar(
         backgroundColor: pinkHeader,
         leading: IconButton(
@@ -51,7 +53,8 @@ class _RattrapageViewState extends State<RattrapageView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // GROS BOUTON ORANGE
+                
+                // BOUTON AJOUTER
                 SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -59,15 +62,20 @@ class _RattrapageViewState extends State<RattrapageView> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: orangeBtn,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      elevation: 4,
+                      shadowColor: orangeBtn.withOpacity(0.4),
                     ),
-                    onPressed: () {}, // Action à définir
-                    icon: const Icon(Icons.add, color: Colors.white),
-                    label: const Text("Planifier une session de rattrapage", style: TextStyle(color: Colors.white, fontSize: 16)),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const CreateRattrapageView()));
+                    }, 
+                    icon: const Icon(Icons.add_circle, color: Colors.white),
+                    label: const Text("Planifier une session de rattrapage", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
                   ),
                 ),
+                
                 const SizedBox(height: 20),
 
-                // CARTES STATS (3 Blocs)
+                // CARTES STATS
                 Row(
                   children: [
                     Expanded(child: _statCard(vm.sessionsCount.toString(), "Sessions", Colors.orange)),
@@ -84,11 +92,11 @@ class _RattrapageViewState extends State<RattrapageView> {
 
                 // LISTE DES SESSIONS
                 ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(), // Important car dans SingleChildScrollView
+                  physics: const NeverScrollableScrollPhysics(), 
                   shrinkWrap: true,
                   itemCount: vm.sessions.length,
                   itemBuilder: (context, index) {
-                    return _sessionCard(vm.sessions[index]);
+                    return _sessionCard(context, vm.sessions[index]);
                   },
                 ),
               ],
@@ -99,7 +107,6 @@ class _RattrapageViewState extends State<RattrapageView> {
     );
   }
 
-  // Widget pour une petite carte stat (Blanc avec ombre)
   Widget _statCard(String count, String label, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 15),
@@ -118,8 +125,8 @@ class _RattrapageViewState extends State<RattrapageView> {
     );
   }
 
-  // Widget pour une carte de session (Complexe)
-  Widget _sessionCard(RattrapageSession session) {
+  // --- CARTE SESSION MISE A JOUR ---
+  Widget _sessionCard(BuildContext context, RattrapageSession session) {
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
       padding: const EdgeInsets.all(16),
@@ -133,7 +140,6 @@ class _RattrapageViewState extends State<RattrapageView> {
         children: [
           Row(
             children: [
-              // Icône Calendrier Orange
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
@@ -143,7 +149,6 @@ class _RattrapageViewState extends State<RattrapageView> {
                 child: const Icon(Icons.calendar_today, color: Colors.orange),
               ),
               const SizedBox(width: 12),
-              // Titre et Prof
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,7 +169,6 @@ class _RattrapageViewState extends State<RattrapageView> {
           ),
           const SizedBox(height: 15),
           
-          // Infos Date / Salle
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -182,7 +186,6 @@ class _RattrapageViewState extends State<RattrapageView> {
           ),
           
           const SizedBox(height: 12),
-          // Barre de progression
           ClipRRect(
             borderRadius: BorderRadius.circular(5),
             child: LinearProgressIndicator(
@@ -194,31 +197,26 @@ class _RattrapageViewState extends State<RattrapageView> {
           ),
           
           const SizedBox(height: 15),
-          // Boutons Modifier / Liste
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Colors.deepOrange),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  ),
-                  child: const Text("Modifier", style: TextStyle(color: Colors.deepOrange)),
-                ),
+          
+          // --- CHANGEMENT ICI : BOUTON UNIQUE MODIFIER ---
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () {
+                // Navigation vers la page d'édition en passant la session
+                Navigator.push(
+                  context, 
+                  MaterialPageRoute(builder: (_) => EditRattrapageView(session: session))
+                );
+              },
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: Colors.deepOrange),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                padding: const EdgeInsets.symmetric(vertical: 12)
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Colors.grey[300]!),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  ),
-                  child: const Text("Liste inscrits", style: TextStyle(color: Colors.black87)),
-                ),
-              ),
-            ],
+              icon: const Icon(Icons.edit, color: Colors.deepOrange, size: 18),
+              label: const Text("MODIFIER & GÉRER", style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold)),
+            ),
           ),
         ],
       ),

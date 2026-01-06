@@ -3,6 +3,10 @@ import 'package:provider/provider.dart';
 import '../view_models/publish_view_model.dart';
 import '../models/publish_model.dart';
 
+// Imports des sous-pages
+import 'publish_form_view.dart';
+import 'verify_view.dart'; // <--- NOUVEL IMPORT
+
 class PublishView extends StatefulWidget {
   const PublishView({super.key});
 
@@ -14,7 +18,6 @@ class _PublishViewState extends State<PublishView> {
   @override
   void initState() {
     super.initState();
-    // Charger les données au lancement de la page
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<PublishViewModel>(context, listen: false).loadData();
     });
@@ -22,10 +25,9 @@ class _PublishViewState extends State<PublishView> {
 
   @override
   Widget build(BuildContext context) {
-    // Couleurs extraites de l'image
-    final pinkColor = const Color(0xFFE91E63); // Le rose du header
-    final creamBg = const Color(0xFFFFF8E1); // Le fond crème
-    final orangeBtn = const Color(0xFFE65100); // L'orange des boutons
+    final pinkColor = const Color(0xFFE91E63);
+    final creamBg = const Color(0xFFFFF8E1);
+    final orangeBtn = const Color(0xFFE65100);
 
     return Scaffold(
       backgroundColor: creamBg,
@@ -37,13 +39,13 @@ class _PublishViewState extends State<PublishView> {
 
           return Column(
             children: [
-              // --- 1. HEADER ROSE ---
+              // --- HEADER ---
               Container(
                 padding: const EdgeInsets.only(top: 50, left: 16, right: 16, bottom: 20),
                 decoration: BoxDecoration(
                   color: pinkColor,
                   borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(0), // Plat selon l'image
+                    bottomLeft: Radius.circular(0),
                     bottomRight: Radius.circular(0),
                   ),
                 ),
@@ -60,20 +62,13 @@ class _PublishViewState extends State<PublishView> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: const [
-                            Text(
-                              "Publier Notes",
-                              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "Gestion de publication",
-                              style: TextStyle(color: Colors.white70, fontSize: 14),
-                            ),
+                            Text("Publier Notes", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                            Text("Gestion de publication", style: TextStyle(color: Colors.white70, fontSize: 14)),
                           ],
                         )
                       ],
                     ),
                     const SizedBox(height: 20),
-                    // Les deux cartes statistiques en haut
                     Row(
                       children: [
                         Expanded(child: _buildTopStatCard(vm.pendingCount.toString(), "En attente", Colors.orange)),
@@ -85,24 +80,43 @@ class _PublishViewState extends State<PublishView> {
                 ),
               ),
 
-              // --- 2. LISTE SCROLLABLE ---
+              // --- LISTE ---
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Bouton Nouvelle Publication
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                             Navigator.push(context, MaterialPageRoute(builder: (_) => const PublishFormView()));
+                          },
+                          icon: const Icon(Icons.add_circle_outline),
+                          label: const Text("NOUVELLE PUBLICATION MANUELLE"),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: pinkColor,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            elevation: 0,
+                            side: BorderSide(color: pinkColor),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
                       const Text("Notes prêtes à publier", style: TextStyle(color: Colors.brown, fontSize: 16, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 10),
                       
-                      // Liste des examens en attente
                       ...vm.pendingExams.map((exam) => _buildExamCard(exam, orangeBtn)).toList(),
 
                       const SizedBox(height: 20),
                       const Text("Récemment publiées", style: TextStyle(color: Colors.brown, fontSize: 16, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 10),
 
-                      // Petite liste pour les publiés (simplifiée)
                       ...vm.publishedExams.map((exam) => _buildPublishedCard(exam)).toList(),
                     ],
                   ),
@@ -115,7 +129,6 @@ class _PublishViewState extends State<PublishView> {
     );
   }
 
-  // Widget: Carte Statistique du haut (3 En attente)
   Widget _buildTopStatCard(String count, String label, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -134,7 +147,6 @@ class _PublishViewState extends State<PublishView> {
     );
   }
 
-  // Widget: Carte principale (Réseaux Informatiques...)
   Widget _buildExamCard(ExamSession exam, Color btnColor) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -176,7 +188,6 @@ class _PublishViewState extends State<PublishView> {
             ],
           ),
           const SizedBox(height: 15),
-          // Info row (Prof, Date, Students)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -186,12 +197,13 @@ class _PublishViewState extends State<PublishView> {
             ],
           ),
           const SizedBox(height: 20),
-          // Buttons
           Row(
             children: [
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const PublishFormView()));
+                  },
                   icon: const Icon(Icons.upload, size: 18),
                   label: const Text("Publier"),
                   style: ElevatedButton.styleFrom(
@@ -204,7 +216,10 @@ class _PublishViewState extends State<PublishView> {
               const SizedBox(width: 10),
               Expanded(
                 child: OutlinedButton(
-                  onPressed: () {},
+                  // --- MODIFICATION ICI : Navigation vers VerifyView ---
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => VerifyView(exam: exam)));
+                  },
                   child: const Text("Vérifier"),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.black87,
@@ -220,7 +235,6 @@ class _PublishViewState extends State<PublishView> {
     );
   }
 
-  // Widget: Petite carte pour "Récemment publiées"
   Widget _buildPublishedCard(ExamSession exam) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
