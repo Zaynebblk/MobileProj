@@ -1,11 +1,20 @@
 # Node / backend
 node_modules/
 backend/.env
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/logs/
+*.log
 
 # Flutter / frontend
 frontend/.dart_tool/
 frontend/build/
 frontend/.env
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
 
 # Miscellaneous
 *.class
